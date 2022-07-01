@@ -1,36 +1,23 @@
-import NoResults from "./NoResults";
-
-import Spinner from "../UI/Spinner";
+import React from "react";
+import styles from "./PhotoContainer.module.css";
 
 const PhotoContainer = (props) => {
-  console.log(props.photoArray);
   const imageResults = props.photoArray.map((photo, i) => {
     return (
-      <li key={props.query + i}>
+      <li key={i}>
         <img
           src={`https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`}
-          alt={props.query}
+          alt={"random image of " + props.query}
         />
       </li>
     );
   });
 
-  //Conditionally rendering message to user
-  let message = <h2>{props.query || "Results"} </h2>;
-  if (props.hasError || imageResults.length === 0) {
-    message = <NoResults className="not-found" />;
-  }
-
-  if (props.isLoading) {
-    message = <Spinner />;
-  }
-
   return (
-    <div className="photo-container">
-      {message}
-      <ul>{!props.isLoading && imageResults}</ul>
-    </div>
+    <section className={styles["photo-container"]}>
+      <ul className={styles.gallery}>{imageResults}</ul>
+    </section>
   );
 };
 
-export default PhotoContainer;
+export default React.memo(PhotoContainer);

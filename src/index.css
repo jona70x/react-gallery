@@ -1,4 +1,6 @@
 body {
+  height: 100%;
+  width: 100%;
   margin: 0;
   font-family: "Open Sans", sans-serif, -apple-system, BlinkMacSystemFont,
     "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
@@ -7,22 +9,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #3f4850;
   text-align: center;
+  background: url(./assets/images/woodbackground.jpg);
+  background-size: 100% 1800px;
+  background-repeat: no-repeat;
 }
 
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 180px;
+  margin-bottom: auto;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-body {
-  text-align: center;
-  font-family: "Open Sans", sans-serif;
-  color: #3f4850;
-}
 
 h2 {
-  font-size: 2em;
+  font-size: 100px;
   margin: 52px 0 40px;
   text-transform: capitalize;
+  color: rgb(255, 255, 255);
 }
 
 ul {
@@ -36,13 +44,14 @@ a {
 
 .search-form {
   max-width: 460px;
+  width: 100%;
   display: flex;
   margin: 0 auto 32px;
 }
 
 .search-form button {
   outline: none;
-  background-color: #438bbd;
+  background-color: #a8755d;
   border: none;
   padding: 0px 15px;
   border-radius: 0 0.35em 0.35em 0;
@@ -61,61 +70,33 @@ input {
 }
 
 .main-nav li {
+  display: block;
   width: 100%;
   margin-bottom: 1em;
 }
 
 .main-nav a {
-  display: block;
-  background: #438bbd;
-  border-radius: 3px;
-  padding: 5px;
+  background-color: #a8755d;
+  border-radius: 10px;
+  padding: 15px 20px;
   color: #fff;
+  text-transform: capitalize;
+  font-size: 18px;
 }
 
 .main-nav .active,
 .main-nav a:hover,
 .search-form button:hover {
-  background-color: #275270;
+  background: #5b3c2d;
 }
 
-.photo-container ul {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  -ms-align-items: flex-start;
-  align-items: flex-start;
-}
-
-.photo-container ul li {
-  width: 220px;
-  height: 165px;
-  overflow: hidden;
-  margin-bottom: 15px;
-}
-
-.photo-container ul img {
-  width: 100%;
-  height: 100%;
-  transform: scale(1.25);
-  transition: transform 1.25s;
-}
-
-.photo-container li:hover img {
-  transform: scale(1.65);
-}
-
-.photo-container .not-found {
+.not-found {
   width: 100%;
 }
 
 @media only screen and (max-width: 767px) {
   body {
     padding-top: 2em;
-  }
-
-  .photo-container li {
-    margin: auto;
   }
 }
 
@@ -125,7 +106,7 @@ input {
   }
 
   .container {
-    max-width: 960px;
+    max-width: 1100px;
     margin: auto;
   }
 

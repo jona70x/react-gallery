@@ -1,24 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import React from "react";
+import {
+  useLocation,
+  useNavigate,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
+//importing other components
 import Card from "./components/UI/Card";
 import SearchForm from "./components/SearchForm/SearchForm";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import PhotoContainer from "./components/PhotoContainer/PhotoContainer";
 import NavLinks from "./components/NavLinks/NavLinks";
 import NotFound from "./components/PhotoContainer/NotFound";
+import NoResults from "./components/PhotoContainer/NoResults";
+import Spinner from "./components/UI/Spinner";
 
 const App = () => {
-  //Contains objects of data fetched from the APIc
-
+  //Using state and react router hooks
+  let location = useLocation();
+  let navigate = useNavigate();
   const [imagesUrl, setImagesUrl] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchParameter, setSearchParameter] = useState();
   const [error, setError] = useState(null);
 
   //Fetch data from Flickr API
-  const fetchData = async (queryString) => {
+  const fetchData = useCallback(async (queryString) => {
     setIsLoading(true);
     setError(null);
     try {
@@ -27,7 +35,6 @@ const App = () => {
       );
 
       const data = await response.json();
-      console.log(data);
       if (data.stat !== "ok") {
         throw new Error("Something went wrong");
       }
@@ -36,66 +43,75 @@ const App = () => {
       const imageUrl = data.photos.photo;
 
       setImagesUrl(imageUrl);
-      setSearchParameter(queryString);
     } catch (error) {
-      setError(error);
+      setError(true);
     }
     setIsLoading(false);
-    setSearchParameter(queryString);
-  };
+  }, []);
 
   const getSearchResult = (value) => {
-    setSearchParameter(() => value);
-    fetchData(value);
-  };
-  const linkHandler = (query) => {
-    setSearchParameter(() => query);
-    fetchData(query);
+    navigate(`/${value}`);
   };
 
   useEffect(() => {
-    fetchData("picasso");
-  }, []);
+    if (location.pathname === "/") {
+      fetchData("picasso");
+    } else {
+      fetchData(location.pathname);
+    }
+  }, [location.pathname, fetchData]);
+
+  //Conditionally rendering message to user
+  let message = <h2>{location.pathname.slice(1)} </h2>;
+
+  if (error || imagesUrl.length === 0) {
+    message = <NoResults className="not-found" />;
+  }
+
+  if (isLoading) {
+    message = <Spinner />;
+  }
 
   return (
-    <BrowserRouter>
+    <>
       <Card>
-        <SearchForm searchParameter={getSearchResult} />
-        <NavLinks fetchData={linkHandler} />
+        <SearchForm navigateTo={getSearchResult} />
+        <NavLinks searchParameter={getSearchResult} />
+
         <Routes>
           <Route path="/" element={<Navigate to="/picasso" />} />
-          {["picasso", "beaches", "nature"].map((query) => {
-            return (
-              <Route
-                key={query}
-                path={query}
-                element={
-                  <PhotoContainer
-                    hasError={error}
-                    isLoading={isLoading}
-                    photoArray={imagesUrl}
-                    query={searchParameter}
-                  />
-                }
-              />
-            );
-          })}
-
           <Route
-            path={`/:${searchParameter}`}
+            path="/picasso"
             element={
-              <PhotoContainer
-                hasError={error}
-                isLoading={isLoading}
-                photoArray={imagesUrl}
-                query={searchParameter}
-              />
+              <>
+                {message}
+                {!isLoading && imagesUrl.length !== 0 && (
+                  <PhotoContainer
+                    photoArray={imagesUrl}
+                    query={location.pathname.slice(1)}
+                  />
+                )}
+              </>
             }
           />
-          <Route path="*" element={<NotFound />} />
+          <Route
+            path=":userId"
+            element={
+              <>
+                {message}
+                {!isLoading && (
+                  <PhotoContainer
+                    photoArray={imagesUrl}
+                    query={location.pathname.slice(1)}
+                  />
+                )}
+              </>
+            }
+          />
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </Card>
-    </BrowserRouter>
+    </>
   );
 };
 

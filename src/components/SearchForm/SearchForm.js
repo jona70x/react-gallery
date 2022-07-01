@@ -13,7 +13,7 @@ const SearchForm = (props) => {
   //Get data from Search form
   const searchHandler = (e) => {
     e.preventDefault();
-    props.searchParameter(inputValue);
+    props.navigateTo(inputValue);
     setInputValue(() => "");
   };
 
