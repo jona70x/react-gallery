@@ -73,45 +73,43 @@ const App = () => {
   }
 
   return (
-    <>
-      <Card>
-        <SearchForm navigateTo={getSearchResult} />
-        <NavLinks searchParameter={getSearchResult} />
+    <Card>
+      <SearchForm navigateTo={getSearchResult} />
+      <NavLinks searchParameter={getSearchResult} />
 
-        <Routes>
-          <Route path="/" element={<Navigate to="/picasso" />} />
-          <Route
-            path="/picasso"
-            element={
-              <>
-                {message}
-                {!isLoading && imagesUrl.length !== 0 && (
-                  <PhotoContainer
-                    photoArray={imagesUrl}
-                    query={location.pathname.slice(1)}
-                  />
-                )}
-              </>
-            }
-          />
-          <Route
-            path=":userId"
-            element={
-              <>
-                {message}
-                {!isLoading && (
-                  <PhotoContainer
-                    photoArray={imagesUrl}
-                    query={location.pathname.slice(1)}
-                  />
-                )}
-              </>
-            }
-          />
-          <Route path="*" element={<NotFound />}></Route>
-        </Routes>
-      </Card>
-    </>
+      <Routes>
+        <Route path="/" element={<Navigate to="/picasso" />} />
+        <Route
+          path="/picasso"
+          element={
+            <>
+              {message}
+              {!isLoading && imagesUrl.length !== 0 && (
+                <PhotoContainer
+                  photoArray={imagesUrl}
+                  query={location.pathname.slice(1)}
+                />
+              )}
+            </>
+          }
+        />
+        <Route
+          path=":userId"
+          element={
+            <>
+              {message}
+              {!isLoading && (
+                <PhotoContainer
+                  photoArray={imagesUrl}
+                  query={location.pathname.slice(1)}
+                />
+              )}
+            </>
+          }
+        />
+        <Route path="*" element={<NotFound />}></Route>
+      </Routes>
+    </Card>
   );
 };
 

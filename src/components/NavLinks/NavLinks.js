@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
 
-const NavLinks = (props) => {
+const NavLinks = () => {
   const links = ["picasso", "beaches", "nature"].map((query) => {
     return (
       <li key={query + "1"}>
