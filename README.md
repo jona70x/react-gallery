@@ -1,6 +1,8 @@
 # Welcome to my React gallery app
 
 This project was created using React Router V6 and create react app.
+In order to make this project work, you will need an api key from flickr. Edit the KEY constant in the APP component.
+Here is the link https://www.flickr.com/services/apps/create/apply/
 
 # Getting Started with Create React App
 

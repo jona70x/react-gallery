@@ -8,6 +8,11 @@ import {
   Navigate,
 } from "react-router-dom";
 
+//importing API key.
+import KEY from "./config";
+// In order to make this project work, you will need an api key from flickr.
+//Here is the link  to apply for a non-commercial one: https://www.flickr.com/services/apps/create/apply/
+
 //importing other components
 import Card from "./components/UI/Card";
 import SearchForm from "./components/SearchForm/SearchForm";
@@ -31,7 +36,7 @@ const App = () => {
     setError(null);
     try {
       const response = await fetch(
-        `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=5b65f8fe490d51a80594722c0ece1784&tags=${queryString}&per_page=24&format=json&nojsoncallback=1`
+        `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${KEY}&tags=${queryString}&per_page=24&format=json&nojsoncallback=1`
       );
 
       const data = await response.json();
