@@ -1,17 +1,19 @@
 import { useEffect, useState, useCallback } from "react";
 import React from "react";
-import {
-  useLocation,
-  useNavigate,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { useLocation, useNavigate, Routes, Route } from "react-router-dom";
 
 //importing API key.
-import KEY from "./config";
+// import KEY from "./config";
+
 // In order to make this project work, you will need an api key from flickr.
 //Here is the link  to apply for a non-commercial one: https://www.flickr.com/services/apps/create/apply/
+
+/** IMPORTANT NOTE
+ *
+ * I am using and exposing my own API key only for educational purposes.
+ * Exposing configuration files and API keys are not recommended
+ *
+ */
 
 //importing other components
 import Card from "./components/UI/Card";
@@ -21,6 +23,7 @@ import NavLinks from "./components/NavLinks/NavLinks";
 import NotFound from "./components/PhotoContainer/NotFound";
 import NoResults from "./components/PhotoContainer/NoResults";
 import Spinner from "./components/UI/Spinner";
+import Welcome from "./components/PhotoContainer/Welcome";
 
 const App = () => {
   //Using state and react router hooks
@@ -36,7 +39,7 @@ const App = () => {
     setError(null);
     try {
       const response = await fetch(
-        `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${KEY}&tags=${queryString}&per_page=24&format=json&nojsoncallback=1`
+        `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=5b65f8fe490d51a80594722c0ece1784&tags=${queryString}&per_page=24&format=json&nojsoncallback=1`
       );
 
       const data = await response.json();
@@ -59,9 +62,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (location.pathname === "/") {
-      fetchData("picasso");
-    } else {
+    if (location.pathname !== "/") {
       fetchData(location.pathname);
     }
   }, [location.pathname, fetchData]);
@@ -83,21 +84,7 @@ const App = () => {
       <NavLinks searchParameter={getSearchResult} />
 
       <Routes>
-        <Route path="/" element={<Navigate to="/picasso" />} />
-        <Route
-          path="/picasso"
-          element={
-            <>
-              {message}
-              {!isLoading && imagesUrl.length !== 0 && (
-                <PhotoContainer
-                  photoArray={imagesUrl}
-                  query={location.pathname.slice(1)}
-                />
-              )}
-            </>
-          }
-        />
+        <Route path="/" element={<Welcome />} />
         <Route
           path=":userId"
           element={
